@@ -19,7 +19,7 @@ function spawnPython(
     return;
   }
 
-  const proc = spawn(exe, args, options);
+  const proc = spawn(exe, args, { ...options, env: process.env });
 
   proc.stdout?.on("data", (data: Buffer) => onData(data.toString()));
   proc.stderr?.on("data", (data: Buffer) => onData(`ERROR: ${data.toString()}`));
