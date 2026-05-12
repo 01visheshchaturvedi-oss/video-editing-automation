@@ -3,7 +3,7 @@ import { spawn, SpawnOptions } from "child_process";
 import path from "path";
 
 // Try different Python executable names (cross-platform)
-const PYTHON_CANDIDATES = ["python", "python3", "py"];
+const PYTHON_CANDIDATES = ["/home/codespace/miniconda3/envs/video-editor/bin/python"];
 
 function spawnPython(
   args: string[],
