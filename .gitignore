@@ -30,6 +30,16 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Ignore all media files
+*.mp4
+*.mp3
+*.wav
+*.png
+*.jpg
+# Ignore the output folder
+backend/output/
+
+
 # env files (can opt-in for committing if needed)
 .env*
 
