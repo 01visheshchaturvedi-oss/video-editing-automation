@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, Folder, Music, Video, Loader2, FileTerminal, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function Home() {
-  const [mediaDir, setMediaDir] = useState("C:\\Users\\SK\\Desktop\\Haldi");
-  const [audioFile, setAudioFile] = useState("C:\\Users\\SK\\Desktop\\Haldi\\haldi mashup.mp3");
-  const [outputFile, setOutputFile] = useState("C:\\Users\\SK\\Desktop\\video.mp4");
+  const [mediaDir, setMediaDir] = useState("/workspaces/video-editing-automation/backend");
+  const [audioFile, setAudioFile] = useState("/workspaces/video-editing-automation/backend/haldi_mashup.mp3");
+  const [outputFile, setOutputFile] = useState("/workspaces/video-editing-automation/backend/video.mp4");
 
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "running" | "success" | "error">("idle");
