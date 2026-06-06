@@ -2,9 +2,13 @@ import { NextRequest } from "next/server";
 import { spawn, SpawnOptions } from "child_process";
 import path from "path";
 
-// Flexible Python resolution: try system PATH first, then common locations
+// Flexible Python resolution: prefer known install locations, fall back to PATH
 const PYTHON_CANDIDATES = process.platform === "win32"
-  ? ["python", "py", "python3"]
+  ? [
+      "C:\\Users\\sk\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "C:\\Program Files\\Python311\\python.exe",
+      "python", "py", "python3",
+    ]
   : ["python3", "python", "/home/codespace/miniconda3/envs/video-editor/bin/python"];
 
 function spawnPython(
