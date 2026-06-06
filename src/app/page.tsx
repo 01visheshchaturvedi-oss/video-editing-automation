@@ -4,10 +4,20 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Folder, Music, Video, Loader2, FileTerminal, CheckCircle2, AlertCircle } from "lucide-react";
 
+// Detect if running on Windows to provide sensible defaults
+const isWindows = typeof navigator !== "undefined" && navigator.platform?.toLowerCase().includes("win");
+const desktopDir = isWindows ? "C:\\Users\\sk\\Desktop" : "/workspaces/video-editing-automation/backend";
+
 export default function Home() {
-  const [mediaDir, setMediaDir] = useState("/workspaces/video-editing-automation/backend");
-  const [audioFile, setAudioFile] = useState("/workspaces/video-editing-automation/backend/haldi_mashup.mp3");
-  const [outputFile, setOutputFile] = useState("/workspaces/video-editing-automation/backend/video.mp4");
+  const [mediaDir, setMediaDir] = useState(
+    isWindows ? `${desktopDir}\\media` : `${desktopDir}`
+  );
+  const [audioFile, setAudioFile] = useState(
+    isWindows ? `${desktopDir}\\audio.mp3` : `${desktopDir}/haldi_mashup.mp3`
+  );
+  const [outputFile, setOutputFile] = useState(
+    isWindows ? `${desktopDir}\\output_video.mp4` : `${desktopDir}/video.mp4`
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "running" | "success" | "error">("idle");
@@ -86,6 +96,11 @@ export default function Home() {
         <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto font-light">
           A high-performance pipeline that intuitively cuts, polishes, and syncs your photos and videos perfectly to the beat.
         </p>
+        {isWindows && (
+          <p className="mt-2 text-xs text-emerald-500/60 font-mono">
+            🖥️ Local mode — reads from & saves to your desktop
+          </p>
+        )}
       </motion.div>
 
       <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -122,6 +137,9 @@ export default function Home() {
                   required
                 />
               </div>
+              <p className="text-[10px] text-slate-500 mt-1 font-mono">
+                Folder containing .mp4, .mov, .jpg, .png files
+              </p>
             </div>
 
             <div>
@@ -152,10 +170,15 @@ export default function Home() {
                   value={outputFile}
                   onChange={(e) => setOutputFile(e.target.value)}
                   className="block w-full pl-10 pr-3 py-3 border border-white/10 rounded-xl bg-black/40 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all font-mono text-sm"
-                  placeholder="C:\path\to\video.mp4"
+                  placeholder="C:\path\to\output.mp4"
                   required
                 />
               </div>
+              {isWindows && (
+                <p className="text-[10px] text-emerald-500/60 mt-1">
+                  💾 Saves directly to your PC — nothing stored on server
+                </p>
+              )}
             </div>
 
             <div className="pt-4">

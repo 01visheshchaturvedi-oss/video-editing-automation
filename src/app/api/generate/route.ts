@@ -2,8 +2,10 @@ import { NextRequest } from "next/server";
 import { spawn, SpawnOptions } from "child_process";
 import path from "path";
 
-// Try different Python executable names (cross-platform)
-const PYTHON_CANDIDATES = ["/home/codespace/miniconda3/envs/video-editor/bin/python"];
+// Flexible Python resolution: try system PATH first, then common locations
+const PYTHON_CANDIDATES = process.platform === "win32"
+  ? ["python", "py", "python3"]
+  : ["python3", "python", "/home/codespace/miniconda3/envs/video-editor/bin/python"];
 
 function spawnPython(
   args: string[],
@@ -15,18 +17,17 @@ function spawnPython(
 ) {
   const exe = candidates.shift();
   if (!exe) {
-    onError(new Error("Could not find a valid Python executable (tried: python, python3, py). Please ensure Python is installed and on your PATH."));
+    onError(new Error("Could not find a valid Python executable. Ensure Python 3.8+ is installed and on your PATH."));
     return;
   }
 
   const proc = spawn(exe, args, { ...options, env: process.env });
 
   proc.stdout?.on("data", (data: Buffer) => onData(data.toString()));
-  proc.stderr?.on("data", (data: Buffer) => onData(`ERROR: ${data.toString()}`));
+  proc.stderr?.on("data", (data: Buffer) => onData(data.toString()));
   proc.on("close", onClose);
   proc.on("error", (err: NodeJS.ErrnoException) => {
     if (err.code === "ENOENT" && candidates.length > 0) {
-      // Try next candidate
       spawnPython(args, options, onData, onClose, onError, candidates);
     } else {
       onError(err);
